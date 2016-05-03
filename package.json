@@ -1,0 +1,25 @@
+{
+  "name": "testx-stomp-keywords",
+  "version": "0.1.0",
+  "description": "Keywords to test STOMP (Streaming Text Oriented Messaging Protocol) using the testx library.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/johanpiet/testx-stomp-keywords.git"
+  },
+  "keywords": [
+    "stomp",
+    "activemq",
+    "testx",
+    "test"
+  ],
+  "author": "Johan Piet",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/johanpiet/testx-stomp-keywords/issues"
+  },
+  "homepage": "https://github.com/johanpiet/testx-stomp-keywords"
+}
