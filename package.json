@@ -1,6 +1,6 @@
 {
   "name": "testx-stomp-keywords",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Keywords to test STOMP (Streaming Text Oriented Messaging Protocol) using the testx library.",
   "main": "index.js",
   "dependencies": {
