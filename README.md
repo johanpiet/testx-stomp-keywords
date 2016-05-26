@@ -24,7 +24,12 @@ testx.keywords.add(require('testx-stomp-keywords'))
 
 | Keyword                | Argument name | Argument value  | Description | Supports repeating arguments |
 | ---------------------- | ------------- | --------------- |------------ | ---------------------------- |
-| publish msg            |               |                 | publishes a message to the stomp-queue |  |
+| publish msg            |               |                 | publishes a message to the topic |  |
+|                        | host          | The host of the topic || No |
+|                        | topic         | The name of the topic to publish to|| No |
+|                        | body          | The text of the message that will be published || No |
+|                        | port          | The port of the topic (default (61613) || No |
+| queue msg            |               |                 | publishes a message to the stomp-queue |  |
 |                        | host          | The host of the queue || No |
 |                        | queue         | The name of the queue to publish to|| No |
 |                        | body          | The text of the message that will be published || No |
