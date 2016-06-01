@@ -8,7 +8,7 @@ function publish(host, queue, body, port, destType) {
 		{
 				host: host,
 				port: port,
-				retryOnClosed: true,
+				retryOnClosed: false,
 		}
 	);
 	client.publish(destination, body);
@@ -20,7 +20,7 @@ function subscribe(args, context) {
 		{
 				host: args.host,
 				port: args.port,
-				retryOnClosed: true,
+				retryOnClosed: false,
 		}
 	);
 	ctx = context.__STOMP__ = context.__STOMP__ || {}
