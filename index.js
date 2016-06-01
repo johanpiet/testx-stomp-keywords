@@ -1,38 +1,38 @@
-var Stomp = require('stomp-client');
+var stomp = require('stompy');
 var q = require('q');
 
 
 function publish(host, queue, body, port, destType) {
-	var deferred = q.defer();
 	var destination = '/' + destType + '/' + queue;
-	var client = new Stomp(host, port);
-	client.connect(function (sessionId) {
-		client.publish(destination, body);
-    client.disconnect(null);
-		deferred.resolve(sessionId);
-	}, function(err) {deferred.reject(err);});
-	return deferred.promise;
+	var client = stomp.createClient(
+		{
+				host: host,
+				port: port,
+				retryOnClosed: true,
+		}
+	);
+	client.publish(destination, body);
 }
 
 function subscribe(args, context) {
-	var deferred = q.defer();
 	var destination = '/topic/' + args.topic;
-	var client = new Stomp(args.host, args.port);
+	var client = stomp.createClient(
+		{
+				host: args.host,
+				port: args.port,
+				retryOnClosed: true,
+		}
+	);
 	ctx = context.__STOMP__ = context.__STOMP__ || {}
 	ctx[args.topic] = ctx[args.topic] || []
-	client.connect(function (sessionId) {
-		client.subscribe(destination, function(body, headers) {
-			console.log('received');
-			console.log(body);
-			var msg = {
-				headers: headers,
-				body: body
-			};
-			ctx[args.topic].push(msg);
-    });
-		deferred.resolve(sessionId);
-	}, function(err) {deferred.reject(err);});
-	return deferred.promise;
+	client.subscribe(destination, function(body) {
+		console.log('received');
+		console.log(body);
+		var msg = {
+			body: body
+		};
+		ctx[args.topic].push(msg);
+  });
 }
 
 function checkMsgCount(args, context) {
