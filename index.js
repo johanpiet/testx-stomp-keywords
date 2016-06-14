@@ -1,5 +1,5 @@
 var stomp = require('stompy');
-var q = require('q');
+var Stomp = require('stomp-client');
 
 
 function publish(host, queue, body, port, destType) {
@@ -8,30 +8,30 @@ function publish(host, queue, body, port, destType) {
 		{
 				host: host,
 				port: port,
-				retryOnClosed: false,
+				retryOnClosed: true,
 		}
 	);
 	client.publish(destination, body);
+	client.disconnt
 }
 
 function subscribe(args, context) {
 	var destination = '/topic/' + args.topic;
-	var client = stomp.createClient(
-		{
-				host: args.host,
-				port: args.port,
-				retryOnClosed: false,
-		}
-	);
+	var client = new Stomp(args.host, args.port);
+
 	ctx = context.__STOMP__ = context.__STOMP__ || {}
 	ctx[args.topic] = ctx[args.topic] || []
-	client.subscribe(destination, function(body) {
-		console.log('received');
-		console.log(body);
-		var msg = {
-			body: body
-		};
-		ctx[args.topic].push(msg);
+
+	client.connect(function(sessionId) {
+    client.subscribe(destination, function(body, headers) {
+			console.log('received');
+			console.log(body);
+			var msg = {
+				body: body,
+				headers: headers
+			};
+			ctx[args.topic].push(msg);
+    });
   });
 }
 
