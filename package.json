@@ -6,7 +6,8 @@
   "dependencies": {
     "q": "^1.4.1",
     "stompy": "^1.4.0",
-    "stomp-client": "^0.8.1"
+    "stomp-client": "^0.8.1",
+    "jsonpath-plus": "0.15.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

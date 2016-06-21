@@ -39,6 +39,12 @@ Please remember that this is an asynchronous protocol: subscriptions and publica
 | check msg count        |               |                 | Checks if the number of received messages (from the moment of subscribing to the topic) equals 'count' |  |
 |                        | topic          | The name of the topic || No |
 |                        | count         | The count to check against|| No |
+| assert msg             |               |                 | Asserts if a certain assertion value is present in the message specified by the id value. It using jsonpath-plus to determine the path |  |
+|                        | topic          | The name of the topic || No |
+|                        | id_path         | Path to the message identifier || No |
+|                        | id_value         | The value of the message identifier|| No |
+|                        | assert_path         | The path to the assertion value|| No |
+|                        | assert_value         | The value to assert against|| No |
 | subscribe to topic              |               |                 | subscribe to a topic to receive messages |  |
 |                        | host          | The host of the topic || No |
 |                        | topic         | The name of the topic to subscribe to|| No |
