@@ -1,7 +1,7 @@
 var stomp = require('stompy');
 var Stomp = require('stomp-client');
 var JSONPath = require('jsonpath-plus');
-
+var client;
 
 function publish(host, queue, body, port, destType) {
 	var destination = '/' + destType + '/' + queue;
@@ -15,12 +15,22 @@ function publish(host, queue, body, port, destType) {
 	client.publish(destination, body);
 }
 
-function subscribe(args, context) {
-	var destination = '/topic/' + args.topic;
-	var client = new Stomp(args.host, args.port);
+function topicDestination(topic) {
+	return '/topic/' + topic;
+}
 
-	ctx = context.__STOMP__ = context.__STOMP__ || {}
-	ctx[args.topic] = ctx[args.topic] || []
+function unsubscribe(args, context) {
+	var destination = topicDestination(args.topic);
+
+	client.unsubscribe(destination);
+}
+
+function subscribe(args, context) {
+	var destination = topicDestination(args.topic);
+	client = client || new Stomp(args.host, args.port);
+
+	msgctx = context.__STOMP__ = context.__STOMP__ || {}
+	msgctx[args.topic] = msgctx[args.topic] || [];
 
 	client.connect(function(sessionId) {
     client.subscribe(destination, function(body, headers) {
@@ -30,8 +40,9 @@ function subscribe(args, context) {
 				body: body,
 				headers: headers
 			};
-			ctx[args.topic].push(msg);
+			msgctx[args.topic].push(msg);
     });
+
   });
 }
 
@@ -77,6 +88,7 @@ module.exports = {
   'queue msg': function (args) { publish(args.host, args.queue, args.body, args.port = 61613, 'queue'); },
 	'check msg count': checkMsgCount,
 	'subscribe to topic': subscribe,
+  'unsubscribe topic': unsubscribe,
 	'assert msg': assertMsg,
 	'flush topic':flush
 };
