@@ -13,7 +13,6 @@ function publish(host, queue, body, port, destType) {
 		}
 	);
 	client.publish(destination, body);
-	client.disconnt
 }
 
 function subscribe(args, context) {
@@ -53,7 +52,7 @@ function assertMsg(args, context) {
 			if(result) {
 				expect(result.length).toBeGreaterThan(0, assertFailedMsg(context, "Assertion key " + args.assert_path + " not found in the message"));
 				if(result.length > 0) {
-					expect(result[0]).toEqual(args.assert_value, assertFailedMsg(context, "Assertion value does not match message"));
+					expect(result[0] + "").toEqual(args.assert_value + "", assertFailedMsg(context, "Assertion value does not match message"));
 				}
 			}
 		}
