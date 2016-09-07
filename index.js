@@ -50,26 +50,49 @@ function checkMsgCount(args, context) {
     expect(context.__STOMP__[args.topic].length).toEqual(parseInt(args.count), assertFailedMsg(context, "Message count is wrong"));
 }
 
-function assertMsg(args, context) {
+function assertMsgEquals(args, context) {
     var found = false;
     context.__STOMP__[args.topic].forEach(function (msg) {
         var json = JSON.parse(msg.body);
-        var result = JSONPath({json: json, path: args.id_path});
-        if (result.length > 0 && result[0] == args.id_value) {
+        if (messagePresentAtIdentifier(json, args.id_path, args.id_value, context)) {
             found = true;
-            result = JSONPath({json: json, path: args.assert_path});
-
-            expect(result).not.toBeNull(assertFailedMsg(context, "Assertion key " + args.assert_path + " not found in the message"));
-            if (result) {
-                expect(result.length).toBeGreaterThan(0, assertFailedMsg(context, "Assertion key " + args.assert_path + " not found in the message"));
-                if (result.length > 0) {
-                    expect(result[0] + "").toEqual(args.assert_value + "", assertFailedMsg(context, "Assertion value does not match message"));
-                }
-            }
+            var result = getValueAtAssertPath(json, args.assert_path, context);
+            expect(result).toEqual(args.assert_value + "", assertFailedMsg(context, "Assertion value does not equal message"));
         }
     });
 
     expect(found).toBeTruthy(assertFailedMsg(context, "No message found for the identifier " + args.id_path + "[" + args.id_value + "]"));
+}
+
+function assertMsgMatches(args, context) {
+    var found = false;
+    context.__STOMP__[args.topic].forEach(function (msg) {
+        var json = JSON.parse(msg.body);
+        if (messagePresentAtIdentifier(json, args.id_path, args.id_value, context)) {
+            found = true;
+            var result = getValueAtAssertPath(json, args.assert_path, context);
+            expect(result).toMatch(args.assert_value + "", assertFailedMsg(context, "Assertion value does not match message"));
+        }
+    });
+
+    expect(found).toBeTruthy(assertFailedMsg(context, "No message found for the identifier "+ args.id_path + "[" + args.id_value + "]"));
+}
+
+function getValueAtAssertPath(json, assertPath, context) {
+    var result = JSONPath({json: json, path: assertPath});
+
+    expect(result).not.toBeNull(assertFailedMsg(context, "Assertion key " + assertPath + " not found in the message"));
+    if (result) {
+        expect(result.length).toBeGreaterThan(0, assertFailedMsg(context, "Assertion key " + assertPath + " not found in the message"));
+        if (result.length > 0) {
+            return result[0] + "";
+        }
+    }
+}
+
+function messagePresentAtIdentifier(json, idPath, idValue, context) {
+    var result = JSONPath({json: json, path: idPath});
+    return result.length > 0 && result[0] == idValue;
 }
 
 function flush(args, context) {
@@ -93,6 +116,7 @@ module.exports = {
     'check msg count': checkMsgCount,
     'subscribe to topic': subscribe,
     'unsubscribe topic': unsubscribe,
-    'assert msg': assertMsg,
+    'assert msg': assertMsgEquals,
+    'assert msg matches': assertMsgMatches,
     'flush topic': flush
 };
