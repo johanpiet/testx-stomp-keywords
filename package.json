@@ -1,6 +1,6 @@
 {
   "name": "testx-stomp-keywords",
-  "version": "2.7.0",
+  "version": "2.6.0",
   "description": "Keywords to test STOMP (Streaming Text Oriented Messaging Protocol) using the testx library.",
   "main": "index.js",
   "dependencies": {
@@ -14,7 +14,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/johanpiet/testx-stomp-keywords.git"
+    "url": "git+https://github.com/johanpiet/testx-stomp-keywords.git"
   },
   "keywords": [
     "stomp",
@@ -22,10 +22,38 @@
     "testx",
     "test"
   ],
-  "author": "Johan Piet",
+  "author": {
+    "name": "Johan Piet"
+  },
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/johanpiet/testx-stomp-keywords/issues"
   },
-  "homepage": "https://github.com/johanpiet/testx-stomp-keywords"
+  "homepage": "https://github.com/johanpiet/testx-stomp-keywords",
+  "gitHead": "fdca8f85c1c65bc7b54fc958d68e629b4b9e367b",
+  "_id": "testx-stomp-keywords@2.6.0",
+  "_shasum": "10b9d088410e4191351cb9897305d719cce67ad7",
+  "_from": "testx-stomp-keywords@2.6.0",
+  "_npmVersion": "2.15.1",
+  "_nodeVersion": "4.4.3",
+  "_npmUser": {
+    "name": "jopie",
+    "email": "talpje@gmail.com"
+  },
+  "dist": {
+    "shasum": "10b9d088410e4191351cb9897305d719cce67ad7",
+    "tarball": "https://registry.npmjs.org/testx-stomp-keywords/-/testx-stomp-keywords-2.6.0.tgz"
+  },
+  "maintainers": [
+    {
+      "name": "jopie",
+      "email": "talpje@gmail.com"
+    }
+  ],
+  "_npmOperationalInternal": {
+    "host": "packages-12-west.internal.npmjs.com",
+    "tmp": "tmp/testx-stomp-keywords-2.6.0.tgz_1466773695773_0.12821179069578648"
+  },
+  "directories": {},
+  "_resolved": "https://registry.npmjs.org/testx-stomp-keywords/-/testx-stomp-keywords-2.6.0.tgz"
 }

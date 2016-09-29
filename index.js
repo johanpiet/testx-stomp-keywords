@@ -1,7 +1,7 @@
 var stomp = require('stompy');
 var Stomp = require('stomp-client');
 var JSONPath = require('jsonpath-plus');
-var client;
+var clients = {};
 
 function publish(host, queue, body, port, destType) {
 	var destination = '/' + destType + '/' + queue;
@@ -22,12 +22,14 @@ function topicDestination(topic) {
 function unsubscribe(args, context) {
 	var destination = topicDestination(args.topic);
 
-	client.unsubscribe(destination);
+	clients[args.topic].unsubscribe(destination);
+	clients[args.topic].disconnect();
+	clients[args.topic] = null;
 }
 
 function subscribe(args, context) {
 	var destination = topicDestination(args.topic);
-	client = client || new Stomp(args.host, args.port);
+	var client = clients[args.topic] = clients[args.topic] || new Stomp(args.host, args.port);
 
 	msgctx = context.__STOMP__ = context.__STOMP__ || {}
 	msgctx[args.topic] = msgctx[args.topic] || [];
